@@ -31,7 +31,9 @@ const Navbar = () => {
           <Link className="link" to="/?cat=food">
             <h6>Food</h6>
           </Link>
-          <span>{currentUser?.username}</span>
+          <span style={{ textTransform: "capitalize" }}>
+            {currentUser?.username}
+          </span>
           {currentUser ? (
             <span onClick={logout}>Logout</span>
           ) : (

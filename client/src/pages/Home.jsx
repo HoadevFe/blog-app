@@ -29,6 +29,11 @@ import { Link, useLocation } from "react-router-dom";
 //   },
 // ];
 const Home = () => {
+  const getText = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent;
+  };
+
   const [posts, setPosts] = useState([]);
 
   const cat = useLocation().search;
@@ -49,14 +54,17 @@ const Home = () => {
         {posts.map((post) => (
           <div className="post" key={post.id}>
             <div className="img">
-              <img src={post.img} alt="" />
+              <img src={`../upload/${post.img}`} alt="" />
             </div>
             <div className="content">
               <Link className="link" to={`/post/${post.id}`}>
                 <h1>{post.title}</h1>
               </Link>
-              <p>{post.description}</p>
-              <button>Read More</button>
+              <p>{getText(post.description)}</p>
+              <p className="sub_desc">...</p>
+              <Link to={`/post/${post.id}`}>
+                <button>Read More</button>
+              </Link>
             </div>
           </div>
         ))}
