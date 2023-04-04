@@ -1,33 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import Pagination from "../components/Pagination";
 
-// const posts = [
-//   {
-//     id: 1,
-//     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-//     desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-//     img: "https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-//   },
-//   {
-//     id: 2,
-//     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-//     desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-//     img: "https://images.pexels.com/photos/6489663/pexels-photo-6489663.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-//   },
-//   {
-//     id: 3,
-//     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-//     desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-//     img: "https://images.pexels.com/photos/4230630/pexels-photo-4230630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-//   },
-//   {
-//     id: 4,
-//     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-//     desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
-//     img: "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-//   },
-// ];
 const Home = () => {
   const getText = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
@@ -35,6 +10,8 @@ const Home = () => {
   };
 
   const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
 
   const cat = useLocation().search;
   useEffect(() => {
@@ -48,10 +25,19 @@ const Home = () => {
     };
     fetchApi();
   }, [cat]);
+
+  const lastPageIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPageIndex - postsPerPage;
+  const currentPosts = posts.slice(firstPostIndex, lastPageIndex);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   return (
     <div className="home">
       <div className="posts">
-        {posts.map((post) => (
+        {currentPosts.map((post) => (
           <div className="post" key={post.id}>
             <div className="img">
               <img src={`../upload/${post.img}`} alt="" />
@@ -69,6 +55,12 @@ const Home = () => {
           </div>
         ))}
       </div>
+      <Pagination
+        totalPosts={posts.length}
+        postsPerPage={postsPerPage}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+      />
     </div>
   );
 };

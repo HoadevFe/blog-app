@@ -48,7 +48,7 @@ const Single = () => {
         <div className="user">
           {post.userImg && <img src={post.userImg} alt="" />}
           <div className="info">
-            <span>{post.username}</span>
+            <span style={{ textTransform: "capitalize" }}>{post.username}</span>
             <p>posted {moment(post.date).fromNow()}</p>
           </div>
           {currentUser.username === post.username && (
