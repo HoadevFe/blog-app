@@ -7,6 +7,7 @@ import Single from "./pages/Single";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./styles.scss";
+import PostsUser from "./pages/PostsUser";
 const Layout = () => {
   return (
     <>
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/post/:id",
         element: <Single />,
+      },
+      {
+        path: "/user",
+        element: <PostsUser />,
       },
     ],
   },

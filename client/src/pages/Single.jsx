@@ -13,6 +13,10 @@ const Single = () => {
     return doc.body.textContent;
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [post, setPost] = useState({});
 
   const { currentUser } = useContext(AuthContext);
