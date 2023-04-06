@@ -32,7 +32,7 @@ const Home = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [currentPage]);
+  }, [currentPage, cat]);
 
   return (
     <div className="home">
