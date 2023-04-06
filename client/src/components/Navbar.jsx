@@ -31,7 +31,7 @@ const Navbar = () => {
           <Link className="link" to="/?cat=food">
             <h6>Food</h6>
           </Link>
-          <Link className="link" to="user">
+          <Link className="link" to="/user">
             <span style={{ textTransform: "capitalize" }}>
               {currentUser?.username}
             </span>
@@ -43,12 +43,9 @@ const Navbar = () => {
               Login
             </Link>
           )}
-
-          <span className="write">
-            <Link className="link" to="write">
-              Write
-            </Link>
-          </span>
+          <Link className="link" to="write">
+            <span className="write">Write</span>
+          </Link>
         </div>
       </div>
     </div>

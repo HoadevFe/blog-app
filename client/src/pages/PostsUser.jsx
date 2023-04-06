@@ -28,29 +28,27 @@ const PostsUser = () => {
   return (
     <div className="home">
       <div className="posts">
-        {posts.map((post) => (
-          <Fragment key={post.id}>
-            {currentUser?.id === post.uid ? (
-              <div className="post">
-                <div className="img">
-                  <img src={`../upload/${post.img}`} alt="" />
-                </div>
-                <div className="content">
-                  <Link className="link" to={`/post/${post.id}`}>
-                    <h1>{post.title}</h1>
-                  </Link>
-                  <p>{getText(post.description)}</p>
-                  <p className="sub_desc">...</p>
-                  <Link to={`/post/${post.id}`}>
-                    <button>Update</button>
-                  </Link>
-                </div>
+        {posts.map((post) =>
+          currentUser?.id === post.uid ? (
+            <div className="post" key={post.id}>
+              <div className="img">
+                <img src={`../upload/${post.img}`} alt="" />
               </div>
-            ) : (
-              <></>
-            )}
-          </Fragment>
-        ))}
+              <div className="content">
+                <Link className="link" to={`/post/${post.id}`}>
+                  <h1>{post.title}</h1>
+                </Link>
+                <p>{getText(post.description)}</p>
+                <p className="sub_desc">...</p>
+                <Link to={`/post/${post.id}`}>
+                  <button>Update</button>
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <></>
+          )
+        )}
       </div>
     </div>
   );

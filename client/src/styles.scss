@@ -1,10 +1,7 @@
 $lightGreen: #b9e7e7;
 
 .app {
-  display: flex;
-  justify-content: center;
   .container {
-    width: 1024px;
     .link {
       text-decoration: none;
       color: inherit;
@@ -62,11 +59,16 @@ $lightGreen: #b9e7e7;
     //Navbar
 
     .navbar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      z-index: 1;
       .container {
-        padding: 10px 0;
+        padding: 6px 52px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        background-color: #64acac;
         .logo {
           img {
             width: 120px;
@@ -114,12 +116,14 @@ $lightGreen: #b9e7e7;
 
     footer {
       margin-top: 100px;
-      padding: 20px;
-      background-color: $lightGreen;
+      padding: 6px 20px;
+      background-color: #64acac;
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: 12px;
+      position: sticky;
+      top: 100%;
       img {
         height: 50px;
       }
@@ -128,7 +132,7 @@ $lightGreen: #b9e7e7;
     //HOME
 
     .home {
-      padding: 0px 20px;
+      padding: 0px 110px;
       .posts {
         margin-top: 50px;
         display: flex;
@@ -144,7 +148,7 @@ $lightGreen: #b9e7e7;
           }
           .img {
             flex: 2;
-            max-height: 350px;
+            max-height: 250px;
             position: relative;
             &::after {
               content: "";
@@ -201,41 +205,13 @@ $lightGreen: #b9e7e7;
       }
     }
 
-    //PAGINATION
-
-    .pagination {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 80px;
-
-      button {
-        width: 40px;
-        height: 40px;
-        font-family: inherit;
-        font-weight: 600;
-        font-size: 16px;
-        margin: 0 10px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        background: white;
-        color: teal;
-        border-color: teal;
-      }
-      button.active {
-        font-weight: 600;
-        border-color: #101010;
-        background: $lightGreen;
-        color: #333;
-      }
-    }
-
     //SINGLE
 
     .single {
       display: flex;
       gap: 50px;
+      padding: 0px 110px;
+      margin-top: 80px;
       .content {
         flex: 5;
         display: flex;
@@ -334,7 +310,7 @@ $lightGreen: #b9e7e7;
       margin-top: 20px;
       display: flex;
       gap: 20px;
-
+      padding: 0px 110px;
       .content {
         flex: 5;
         display: flex;
@@ -409,6 +385,36 @@ $lightGreen: #b9e7e7;
             color: teal;
           }
         }
+      }
+    }
+
+    //PAGINATION
+
+    .pagination {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 80px;
+
+      button {
+        width: 40px;
+        height: 40px;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 16px;
+        margin: 0 10px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+        color: teal;
+        border-color: teal;
+      }
+      button.active {
+        font-weight: 600;
+        border-color: #101010;
+        background: $lightGreen;
+        color: #333;
       }
     }
   }
