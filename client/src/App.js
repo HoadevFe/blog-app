@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./styles.scss";
 import PostsUser from "./pages/PostsUser";
+import Profile from "./pages/Profile";
+import ChangePassword from "./pages/ChangePassword";
 const Layout = () => {
   return (
     <>
@@ -36,8 +38,12 @@ const router = createBrowserRouter([
         element: <Single />,
       },
       {
-        path: "/user",
+        path: "/mypost",
         element: <PostsUser />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },
@@ -48,6 +54,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/newpassword",
+    element: <ChangePassword />,
   },
 ]);
 function App() {

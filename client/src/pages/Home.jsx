@@ -34,6 +34,16 @@ const Home = () => {
     window.scrollTo(0, 0);
   }, [currentPage, cat]);
 
+  const handleHasRead = async (postId) => {
+    try {
+      await axios.put(`/posts/read/${postId}`, {
+        is_read: true,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="home">
       <div className="posts">
@@ -44,12 +54,12 @@ const Home = () => {
             </div>
             <div className="content">
               <Link className="link" to={`/post/${post.id}`}>
-                <h1>{post.title}</h1>
+                <h1 onClick={() => handleHasRead(post.id)}>{post.title}</h1>
               </Link>
               <p>{getText(post.description)}</p>
               <p className="sub_desc">...</p>
               <Link to={`/post/${post.id}`}>
-                <button>Read More</button>
+                <button onClick={handleHasRead}>Read More</button>
               </Link>
             </div>
           </div>

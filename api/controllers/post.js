@@ -1,18 +1,31 @@
 import { db } from "../db.js";
 import jwt from "jsonwebtoken";
 export const getPosts = (req, res) => {
-  const q = req.query.cat
+  const uid = req.query.userId;
+  let q = req.query.cat
     ? "SELECT * FROM posts WHERE cat=?"
     : "SELECT * FROM posts";
 
+  if (req.query.cat && uid) q = q + ` and uid = ${uid}`;
+  if (!req.query.cat && uid) q = q + ` where uid = ${uid}`;
+
+  const filterBy = req.query.filterBy;
+  if (filterBy === "isRead") {
+    q = q + " and is_read = true;";
+  }
+  if (filterBy === "like") {
+    q = q + " and is_like = true;";
+  }
   db.query(q, [req.query.cat], (err, data) => {
     if (err) return res.status(500).send(err);
     return res.status(200).json(data);
   });
 };
 export const getPost = (req, res) => {
-  const q =
-    "SELECT p.id, `username`, `title`, `description`, p.img, u.img AS userImg, `cat`, `date` FROM users u JOIN posts p ON u.id=p.uid WHERE p.id = ?";
+  const isRead = req.query.isRead;
+  let q =
+    "SELECT p.id,`is_like`, `username`, `title`, `description`, p.img, u.img AS userImg, `cat`, `date` FROM users u JOIN posts p ON u.id=p.uid WHERE p.id = ? ";
+  if (isRead) q = q + ` and is_read =${isRead}`;
 
   db.query(q, [req.params.id], (err, data) => {
     if (err) return res.status(500).json(err);
@@ -85,5 +98,42 @@ export const updatePosts = (req, res) => {
       if (err) return res.status(500).json(err);
       return res.json("Post has been updated.");
     });
+  });
+};
+
+export const getTotalPost = (req, res) => {
+  let q = "SELECT COUNT(id) as total FROM posts";
+  const uid = req.query.userId;
+  if (uid) q = q + ` WHERE uid = ${uid}`;
+  const filterBy = req.query.filterBy;
+  if (filterBy === "isRead") {
+    q = q + " AND is_read = true;";
+  }
+  if (filterBy === "like") {
+    q = q + " AND is_like = true;";
+  }
+  db.query(q, [], (err, data) => {
+    if (err) return res.status(500).send(err);
+    return res.status(200).json(data[0].total);
+  });
+};
+
+export const isLike = (req, res) => {
+  const postId = req.params.id;
+  const q = "UPDATE posts SET `is_like`=? WHERE `id` = ?";
+  const values = [req.body.is_like];
+  db.query(q, [values, postId], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.json("Like successfuly!");
+  });
+};
+
+export const isRead = (req, res) => {
+  const postId = req.params.id;
+  const q = "UPDATE posts SET `is_read`=? WHERE `id` = ?";
+  const values = [req.body.is_read];
+  db.query(q, [values, postId], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.json("Has Read");
   });
 };

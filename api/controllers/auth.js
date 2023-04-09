@@ -64,3 +64,43 @@ export const logout = (req, res) => {
     .status(200)
     .json("User has been logged out.");
 };
+
+export const changeUsername = (req, res) => {
+  const userId = req.params.id;
+  const value = req.body.username;
+  const q = "SELECT * FROM users WHERE username= ?";
+  db.query(q, [req.body.username], (err, data) => {
+    if (err) return res.json(err);
+
+    if (data.length) return res.status(409).json("UserName already exists!");
+
+    const q = "UPDATE users SET `username`=? WHERE `id` = ?";
+    db.query(q, [value, userId], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json("User name changed success.");
+    });
+  });
+};
+
+export const changePassword = (req, res) => {
+  const userId = req.params.id;
+  const password = req.body.password;
+  const newPassword = req.body.newPassword;
+  const q = "SELECT * FROM users WHERE id = ?";
+  db.query(q, [req.params.id], (err, data) => {
+    if (err) return res.json(err);
+    const isPasswordCorrect = bcrypt.compareSync(password, data[0].password);
+    if (!isPasswordCorrect) return res.status(400).json("Wrong password");
+    if (password === newPassword)
+      return res.status(403).json("Duplicate old password");
+    const salt = bcrypt.genSaltSync(10);
+    const hashNewPassword = bcrypt.hashSync(newPassword, salt);
+
+    const q = "UPDATE users SET `password`=? WHERE `id` = ?";
+    const value = [hashNewPassword];
+    db.query(q, [value, userId], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json("Changed Password Succses.");
+    });
+  });
+};

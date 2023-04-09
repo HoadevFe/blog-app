@@ -6,6 +6,7 @@ import Menu from "../components/Menu";
 import axios from "axios";
 import moment from "moment";
 import { AuthContext } from "../context/authContext";
+import { Button } from "@mui/material";
 
 const Single = () => {
   const getText = (html) => {
@@ -18,7 +19,6 @@ const Single = () => {
   }, []);
 
   const [post, setPost] = useState({});
-
   const { currentUser } = useContext(AuthContext);
 
   const location = useLocation();
@@ -45,23 +45,43 @@ const Single = () => {
       console.log(err);
     }
   };
+
+  const handleLike = async () => {
+    try {
+      await axios.put(`/posts/like/${postId}`, {
+        is_like: true,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="single">
       <div className="content">
         <img src={`../upload/${post?.img}`} alt="" />
         <div className="user">
-          {post.userImg && <img src={post.userImg} alt="" />}
+          {post?.userImg && <img src={post?.userImg} alt="" />}
           <div className="info">
             <span style={{ textTransform: "capitalize" }}>{post.username}</span>
             <p>posted {moment(post.date).fromNow()}</p>
           </div>
-          {currentUser.username === post.username && (
+          {currentUser?.username === post.username && (
             <div className="edit">
               <Link to={`/write?edit=2`} state={post}>
                 <img src={Edit} alt="" />
               </Link>
               <img onClick={handleDelete} src={Delete} alt="" />
             </div>
+          )}
+          {currentUser?.username && (
+            <>
+              <Button
+                onClick={handleLike}
+                variant={post.is_like === 1 ? "contained" : "outlined"}
+              >
+                Like
+              </Button>
+            </>
           )}
         </div>
         <h1>{post.title}</h1>

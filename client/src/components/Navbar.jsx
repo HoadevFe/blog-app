@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import Logo from "../img/logo.png";
+import BasicMenu from "./Popup";
 const Navbar = () => {
   const { currentUser, logout } = useContext(AuthContext);
   return (
@@ -31,13 +32,22 @@ const Navbar = () => {
           <Link className="link" to="/?cat=food">
             <h6>Food</h6>
           </Link>
-          <Link className="link" to="/user">
-            <span style={{ textTransform: "capitalize" }}>
-              {currentUser?.username}
-            </span>
-          </Link>
+
           {currentUser ? (
-            <span onClick={logout}>Logout</span>
+            <BasicMenu
+              title={
+                <span style={{ textTransform: "capitalize" }}>
+                  {currentUser?.username}
+                </span>
+              }
+            />
+          ) : (
+            <></>
+          )}
+          {currentUser ? (
+            <Link className="link" to="/">
+              <span onClick={logout}>Logout</span>
+            </Link>
           ) : (
             <Link className="link" to="/login">
               Login
