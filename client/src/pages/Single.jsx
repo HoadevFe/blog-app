@@ -25,17 +25,17 @@ const Single = () => {
   const navigate = useNavigate();
 
   const postId = location.pathname.split("/")[2];
+  const fetchApi = async () => {
+    try {
+      const res = await axios.get(`/posts/${postId}`);
+      setPost(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
-    const fetchApi = async () => {
-      try {
-        const res = await axios.get(`/posts/${postId}`);
-        setPost(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchApi();
-  }, [postId]);
+  }, []);
 
   const handleDelete = async () => {
     try {
@@ -46,11 +46,12 @@ const Single = () => {
     }
   };
 
-  const handleLike = async () => {
+  const handleLike = async (liked) => {
     try {
       await axios.put(`/posts/like/${postId}`, {
-        is_like: true,
+        liked: liked + 1,
       });
+      fetchApi();
     } catch (err) {
       console.log(err);
     }
@@ -76,10 +77,13 @@ const Single = () => {
           {currentUser?.username && (
             <>
               <Button
-                onClick={handleLike}
-                variant={post.is_like === 1 ? "contained" : "outlined"}
+                onClick={() => handleLike(post.liked)}
+                variant={post.liked !== 0 ? "contained" : "outlined"}
               >
-                Like
+                {post.liked} Likes
+              </Button>
+              <Button disabled variant="contained">
+                {post.views} views
               </Button>
             </>
           )}

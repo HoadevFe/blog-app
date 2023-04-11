@@ -6,8 +6,8 @@ import {
   getPosts,
   getTotalPost,
   updatePosts,
-  isLike,
-  isRead,
+  Liked,
+  Views,
 } from "../controllers/post.js";
 const router = express.Router();
 
@@ -17,7 +17,7 @@ router.get("/:id", getPost);
 router.post("/", addPost);
 router.delete("/:id", deletePost);
 router.patch("/:id", updatePosts);
-router.put("/like/:id", isLike);
-router.put("/read/:id", isRead);
+router.put("/like/:id", Liked);
+router.put("/read/:id", Views);
 
 export default router;
